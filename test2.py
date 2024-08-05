@@ -23,6 +23,7 @@ def delete_directory_if_exists(directory):
 # Parameters
 repo_url = 'https://github.com/pavankalyanvarikolu/terraform-infra.git'
 repo_dir = 'C:/Users/pavan/Downloads/FINAL PAVANCODE-1/FINAL PAVANCODE/terraform-infra'
+report_file = 'vulnerability_report.txt'  # File to store the output
 
 # Clone the repository
 def clone_repo(repo_url, repo_dir):
@@ -38,7 +39,7 @@ def clone_repo(repo_url, repo_dir):
 # Clone the repository
 repo = clone_repo(repo_url, repo_dir)
 
-# If cloning was successful, read and print .tf files
+# If cloning was successful, read and store .tf files content
 if repo:
     def read_tf_files_recursive(directory):
         tf_files_content = {}
@@ -58,8 +59,16 @@ if repo:
 
     tf_files = read_tf_files_recursive(repo_dir)
 
-    for file_path, content in tf_files.items():
-        print(f"--- Content of {file_path} ---")
-        vul = Main.predict_vulnerabilities(content)
-        print(f"Vulnerability report for {file_path}:\n{vul}")
-        print()  # Add an extra line for better readability
+    # Open the report file in write mode
+    with open(report_file, 'w') as report:
+        for file_path, content in tf_files.items():
+            report.write(f"--- Content of {file_path} ---\n")
+            vul = Main.predict_vulnerabilities(content)
+            report.write(f"Vulnerability report for {file_path}:\n{vul}\n")
+            report.write("\n")  # Add an extra line for better readability
+
+    print(f"Vulnerability report has been saved to '{report_file}'")
+
+    # Optionally, print the content of the file (for debugging purposes)
+    with open(report_file, 'r') as report:
+        print(report.read())
