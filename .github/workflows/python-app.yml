@@ -21,10 +21,10 @@ jobs:
       with:
         python-version: '3.8'
 
-    # - name: Create client_secret.json
-    #   run: |
-    #     echo "${{ secrets.CLIENT_SECRET_JSON }}" > client_secret.json
-
+    - name: Recreate token.pickle
+      run: |
+        echo "${{ secrets.GMAIL_OAUTH_TOKEN }}" | base64 --decode > token.pickle
+        
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
