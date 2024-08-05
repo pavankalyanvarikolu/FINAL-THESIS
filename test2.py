@@ -3,6 +3,8 @@ import shutil
 import stat
 import git
 import Main
+import Test
+import base64
 
 def delete_directory_if_exists(directory):
     """Delete the directory and its contents if it exists."""
@@ -66,9 +68,27 @@ if repo:
             vul = Main.predict_vulnerabilities(content)
             report.write(f"Vulnerability report for {file_path}:\n{vul}\n")
             report.write("\n")  # Add an extra line for better readability
+            print(f"Vulnerabilities for {file_path}: {vul}")
 
     print(f"Vulnerability report has been saved to '{report_file}'")
 
-    # Optionally, print the content of the file (for debugging purposes)
-    with open(report_file, 'r') as report:
-        print(report.read())
+    # Send the email using pre-generated OAuth credentials
+    def save_token_from_base64(encoded_token):
+        with open('token.json', 'wb') as token_file:
+            token_file.write(base64.b64decode(encoded_token))
+
+    def authenticate_gmail():
+        SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+        save_token_from_base64(os.getenv('GMAIL_TOKEN_BASE64'))
+        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        service = build('gmail', 'v1', credentials=creds)
+        return service
+
+    # Send email if service is successfully authenticated
+    try:
+        service = authenticate_gmail()
+        Test.send_message(service, "kalyanvarikolu@gmail.com", "Vulnerability Report", "Please find the attached report.", [report_file])
+        print("Email sent successfully.")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
