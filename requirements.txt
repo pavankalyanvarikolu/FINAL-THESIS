@@ -9,6 +9,6 @@ numpy==1.24.0
 requests==2.31.0
 GitPython
 scikit-learn
-spacy==3.2.0
+spacy==3.7.5
 
 
