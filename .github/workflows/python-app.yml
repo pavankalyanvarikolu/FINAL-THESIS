@@ -26,10 +26,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install Spacy Model
+    - name: Run vulnerability scan
       run: |
-        python -m spacy download en_core_web_sm
+        python your_script.py
 
-    - name: Run tests and email report
-      run: |
-        python test2.py
+    - name: Upload vulnerability report
+      uses: actions/upload-artifact@v2
+      with:
+        name: vulnerability-report
+        path: vulnerability_report.txt
