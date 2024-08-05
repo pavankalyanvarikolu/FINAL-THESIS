@@ -3,8 +3,8 @@ import shutil
 import stat
 import Test
 import git
-import  Main
-import  test
+import Main
+import test
 
 def delete_directory_if_exists(directory):
     """Delete the directory and its contents if it exists."""
@@ -62,7 +62,6 @@ if repo:
 
     for file_path, content in tf_files.items():
         print(f"--- Content of {file_path} ---")
-        vul=Main.predict_vulnerabilities(content)
-        print(vul)
-        Test.send_message(Test.service,"kalyanvarikolu@gmail.com",f"--- Content of {file_path} ---",str(vul),[])
-        print()
+        vul = Main.predict_vulnerabilities(content)
+        print(f"Vulnerability report for {file_path}:\n{vul}")
+        print()  # Add an extra line for better readability
