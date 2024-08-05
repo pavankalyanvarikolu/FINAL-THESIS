@@ -1,10 +1,8 @@
 import os
 import shutil
 import stat
-import Test
 import git
 import Main
-import test
 
 def delete_directory_if_exists(directory):
     """Delete the directory and its contents if it exists."""
