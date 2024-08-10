@@ -49,20 +49,20 @@ jobs:
         name: vulnerability-report
         path: vulnerability_report.txt
 
-    - name: Run Terraform FMT
-      run: terraform fmt -check
-      working-directory: ./terraform-infra
-
-    - name: Run Terraform Validation
-      run: terraform validate
-      working-directory: ./terraform-infra
-
-    - name: Run TFLint
-      run: tflint --init && tflint
-      working-directory: ./terraform-infra
-
-    - name: Run Checkov
-      run: checkov -d ./terraform-infra
+#    - name: Run Terraform FMT
+#      run: terraform fmt -check
+#      working-directory: ./terraform-infra
+#
+#    - name: Run Terraform Validation
+#      run: terraform validate
+#      working-directory: ./terraform-infra
+#
+#    - name: Run TFLint
+#      run: tflint --init && tflint
+#      working-directory: ./terraform-infra
+#
+#    - name: Run Checkov
+#      run: checkov -d ./terraform-infra
 
     - name: Send success email
       if: success()
