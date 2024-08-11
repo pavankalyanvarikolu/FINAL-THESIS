@@ -58,6 +58,12 @@ jobs:
         name: vulnerability-report
         path: vulnerability_report.txt
 
+    - name: Upload VPC Remediation Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: vpc-remediation
+        path: vpc_remediation.txt
+
     - name: Send success email
       if: success()
       uses: dawidd6/action-send-mail@v3
@@ -66,11 +72,13 @@ jobs:
         server_port: 465
         username: ${{ secrets.MAIL_USERNAME }}
         password: ${{ secrets.MAIL_PASSWORD }}
-        subject: Build Success - Vulnerability Report
-        body: The CI/CD pipeline has successfully completed. The vulnerability report is attached.
+        subject: Build Success - Reports Attached
+        body: The CI/CD pipeline has successfully completed. The vulnerability and remediation reports are attached.
         to: kalyanvarikolu@gmail.com
         from: ${{ secrets.MAIL_USERNAME }}
-        attachments: vulnerability_report.txt  # Ensure the path is correct
+        attachments: |
+          vulnerability_report.txt
+          vpc_remediation.txt
 
     - name: Send failure email
       if: failure()
@@ -80,7 +88,7 @@ jobs:
         server_port: 465
         username: ${{ secrets.MAIL_USERNAME }}
         password: ${{ secrets.MAIL_PASSWORD }}
-        subject: Build Failed - Vulnerability Report
+        subject: Build Failed - Reports Attached
         body: The CI/CD pipeline has failed. Please check the logs for details.
         to: kalyanvarikolu@gmail.com
         from: ${{ secrets.MAIL_USERNAME }}
@@ -141,18 +149,20 @@ jobs:
          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Send email with Terraform output
+    - name: Send email with Terraform output and VPC Remediation Report
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
         server_port: 465
         username: ${{ secrets.MAIL_USERNAME }}
         password: ${{ secrets.MAIL_PASSWORD }}
-        subject: Terraform Apply Output
-        body: The Terraform apply output is attached.
+        subject: Terraform Apply Output and VPC Remediation Report
+        body: The Terraform apply output and VPC remediation report are attached.
         to: kalyanvarikolu@gmail.com
         from: ${{ secrets.MAIL_USERNAME }}
-        attachments: ./terraform-infra/terraform_output.txt
+        attachments: |
+          ./terraform-infra/terraform_output.txt
+          vpc_remediation.txt
 
   rollback:
     runs-on: ubuntu-latest
