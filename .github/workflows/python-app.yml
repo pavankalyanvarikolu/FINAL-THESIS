@@ -43,26 +43,20 @@ jobs:
       run: |
         python test2.py
 
+    - name: Verify Vulnerability Report
+      run: |
+        if [ -f vulnerability_report.txt ]; then
+          echo "Vulnerability report found."
+        else
+          echo "Vulnerability report not found."
+          exit 1
+        fi
+
     - name: Upload vulnerability report
       uses: actions/upload-artifact@v2
       with:
         name: vulnerability-report
         path: vulnerability_report.txt
-
-#    - name: Run Terraform FMT
-#      run: terraform fmt -check
-#      working-directory: ./terraform-infra
-#
-#    - name: Run Terraform Validation
-#      run: terraform validate
-#      working-directory: ./terraform-infra
-#
-#    - name: Run TFLint
-#      run: tflint --init && tflint
-#      working-directory: ./terraform-infra
-#
-#    - name: Run Checkov
-#      run: checkov -d ./terraform-infra
 
     - name: Send success email
       if: success()
@@ -76,7 +70,7 @@ jobs:
         body: The CI/CD pipeline has successfully completed. The vulnerability report is attached.
         to: kalyanvarikolu@gmail.com
         from: ${{ secrets.MAIL_USERNAME }}
-        attachments: vulnerability_report.txt
+        attachments: vulnerability_report.txt  # Ensure the path is correct
 
     - name: Send failure email
       if: failure()
