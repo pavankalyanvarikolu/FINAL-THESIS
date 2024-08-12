@@ -149,7 +149,7 @@ jobs:
          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Send email with Terraform output and VPC Remediation Report
+    - name: Send email with Terraform output and VPC Infra Report
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
@@ -157,12 +157,12 @@ jobs:
         username: ${{ secrets.MAIL_USERNAME }}
         password: ${{ secrets.MAIL_PASSWORD }}
         subject: Terraform Apply Output and VPC Remediation Report
-        body: The Terraform apply output and VPC remediation report are attached.
+        body: The Terraform apply output and VPC Infra report are attached.
         to: kalyanvarikolu@gmail.com
         from: ${{ secrets.MAIL_USERNAME }}
         attachments: |
           ./terraform-infra/terraform_output.txt
-          vpc_remediation.txt
+          vpc_infra.txt
 
   rollback:
     runs-on: ubuntu-latest
