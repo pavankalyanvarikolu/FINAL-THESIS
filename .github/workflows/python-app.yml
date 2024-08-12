@@ -62,7 +62,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: vpc-remediation
-        path: vpc_remediation.txt
+        path: vpc_remediation_report.txt
 
     - name: Send success email
       if: success()
@@ -78,7 +78,7 @@ jobs:
         from: ${{ secrets.MAIL_USERNAME }}
         attachments: |
           vulnerability_report.txt
-          vpc_remediation.txt
+          vpc_remediation_report.txt
 
     - name: Send failure email
       if: failure()
