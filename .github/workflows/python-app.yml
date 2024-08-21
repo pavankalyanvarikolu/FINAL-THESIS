@@ -142,12 +142,12 @@ jobs:
         name: terraform-output
         path: ./terraform-infra/terraform_output.txt
 
-    - name: Delete terraform infra
-      run: terraform destroy -auto-approve
-      working-directory: ./terraform-infra
-      env:
-         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    # - name: Delete terraform infra
+    #   run: terraform destroy -auto-approve
+    #   working-directory: ./terraform-infra
+    #   env:
+    #      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Send email with Terraform output and VPC Infra Report
       uses: dawidd6/action-send-mail@v3
